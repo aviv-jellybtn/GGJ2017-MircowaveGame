@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
+using XboxCtrlrInput;
 
 [RequireComponent(typeof(SphereCollider), typeof(BoxCollider))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _slowSpeed;
     [SerializeField] private float _dashForce;
+
+    [SerializeField] private XboxController _xboxController;
+
+    [SerializeField] private string _playerName;
 
     private Vector3 _movementDirection;
     private Rigidbody _rigidbody;
@@ -25,14 +29,21 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
 
+        //        XCI.DEBUG_LogControllerNames();
+//        var isLoggedIn = XCI.IsPluggedIn((int)_xboxController);
+//        Debug.LogFormat("Controller {0} is logged in: {1}", _xboxController, isLoggedIn );
+
+//       Debug.Log(XCI.GetNumPluggedCtrlrs());
+//        XCI.DEBUG_LogControllerNames();
+
         // Get inputs
-        var horizontalInput = Input.GetAxisRaw("Horizontal");
-        var verticalInput = Input.GetAxisRaw("Vertical");
+        var horizontalInput = Input.GetAxisRaw("Horizontal" + _playerName);
+        var verticalInput = Input.GetAxisRaw("Vertical" + _playerName);
 
         // Apply movement velocity
         _movementDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
             _isDashActivated = true;
         }
